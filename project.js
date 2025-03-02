@@ -1,3 +1,5 @@
+
+
 // deposit some money
 //determine number pf lines to bet
 //collect a bet amount
@@ -6,54 +8,101 @@
 //give the user their winnings
 //play again
 
-const prompt = require("prompt-sync")();
+const prompt = require("prompt-sync")(); //accepting user input
 
-const deposit = () => {
+
+//Declaring Global Variables
+const ROWS = 3;
+const COLUMNS = 3;
+
+const SYMBOLS_COUNT = {
+    "A": 2,
+    "B": 4,
+    "C": 6,
+    "D": 8
+}
+const SYMBOLS_VALUES = {
+    "A": 5,
+    "B": 4,
+    "C": 3,
+    "D": 2
+}
+
+
+
+deposit = () => {
     while (true) {
         const depositAmount = prompt("Enter deposit amount: ");
-        const numberDepositAmount = parseFloat(depositAmount);
+        const numDepositAmount = parseFloat(depositAmount);
     
-        if (isNaN(numberDepositAmount) || numberDepositAmount <= 0 ) {
-            console.log("invalid deposit amount, try again dude!")
+        if (isNaN(numDepositAmount) || numDepositAmount <= 0 ) {
+            console.log("invalid deposit amount, try again dude!");
         } else {
-            return numberDepositAmount
+            return numDepositAmount
         }
     }
   
 };
 
- const getNumberOfLines = () => {
-    while (true) {
+ const getnumOfLines = () => {
+    while(true) {
         const lines = prompt("Enter number of lines to bet on (1-3): ");
-        const numberOfLines = parseFloat(lines);
+        const numOfLines = parseFloat(lines);
     
-        if (isNaN(numberOfLines) || numberOfLines <= 0  || numberOfLines > 3) {
+        if (isNaN(numOfLines) || numOfLines <= 0  || numOfLines > 3) {
             console.log("invalid number of lines, try again dude!");
         } else {
-            return numberOfLines;
+            return numOfLines;
         }
     }
  };
 
- const getBet = (balance) => {
+ const getBet = (balance, lines) => {
     while (true) {
-        const bet = prompt("Enter the total bet: ");
-        const numberBet = parseFloat(bet);
+        const bet = prompt("Enter the total amount of bet per line based on your balance: ");
+        const numBet = parseFloat(bet);
     
-        if (isNaN(numberBet) || numberBet <= 0  || numberBet > balance) {
-            console.log("invalid bet, try again dude!");
+        if (isNaN(numBet) || numBet <= 0  || numBet > balance / lines) {
+            console.log("Balance too low to complete the Action. Please recharge your account");
         } else {
-            return numberBet;
+            return numBet;
         }
     }
  };
+
+ function playSpin() {
+    const symbols = []; // reference data type which can be manipulated
+    for (const[symbol, count] of Object.entries(SYMBOLS_COUNT)) {
+        for(let i = 0; i < count; i++) {
+            symbols.push(symbol)
+        }
+
+    };
+    let elements = [[],[],[]];
+     for(let i = 0; i < COLUMNS; i++){
+        const elementsSymbols = [...symbols];
+        for(let j = 0; j < ROWS; j++) {
+            const randomnum = Math.floor(Math.random() * elementsSymbols.length)
+            const newSelectedSymbols = elementsSymbols[randomnum]
+            elements[i].push(newSelectedSymbols);
+            elementsSymbols.splice(randomnum, 1);
+        }
+    };
+
+    return elements;
+};
+
+
+
 
 let balance = deposit();
 console.log(`deposited amount: ${balance}`)
 
-const numberOfLines = getNumberOfLines();
-console.log(`numberOfLines: ${numberOfLines}`);
+const numOfLines = getnumOfLines();
+console.log(`numOfLines: ${numOfLines}`);
 
-
-const bet = getBet(balance);
+const bet = getBet(balance, numOfLines);
 console.log(`Bet amount: ${bet}`);
+
+const elements = playSpin();
+console.log(elements);
