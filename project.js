@@ -10,7 +10,19 @@
 
 const prompt = require("prompt-sync")(); //accepting user input
 
-
+const readline = require('readline')
+const rl = readline.createInterface({
+    input:process.stdin,
+    output:process.stdout
+});
+rl.question("Do you like gambling? pr maybe git a try? ", function(gamble) {
+    if(gamble === "yes".toLowerCase){
+        console.log("well let's continue");
+        
+    } else {
+        exit();
+    }
+})
 //Declaring Global Variables
 const ROWS = 3;
 const COLUMNS = 3;
