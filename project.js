@@ -104,8 +104,11 @@ deposit = () => {
     return elements;
 };
 
-
-
+const playerWin = () => {
+    while (true) {
+        
+    }
+}
 
 let balance = deposit();
 console.log(`deposited amount: ${balance}`)
